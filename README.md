@@ -1,4 +1,4 @@
-# cia_renty
+# Renty - College Item Rental App
 
 A new Flutter project.
 
