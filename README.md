@@ -1,3 +1,5 @@
+# Renty - College Item Rental App
+
 A modern Flutter mobile application that enables college students and faculty to safely rent personal items to each other within their campus community.
 
 ## Features
