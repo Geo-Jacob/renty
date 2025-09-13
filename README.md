@@ -1,16 +1,29 @@
-# Renty - College Item Rental App
+A modern Flutter mobile application that enables college students and faculty to safely rent personal items to each other within their campus community.
 
-A new Flutter project.
+## Features
 
-## Getting Started
+### Core Features
+- 🔐 **Secure Authentication** - Email/password, Google Sign-In, phone verification
+- 🏫 **College Verification** - Email domain verification for trusted community
+- 📱 **Modern UI/UX** - Clean, intuitive interface with smooth animations
+- 🔍 **Smart Search & Filters** - Find items quickly with advanced filtering
+- 💬 **In-app Messaging** - Secure communication between renters and owners
+- ⭐ **Rating System** - Build trust through peer reviews
+- 💰 **Secure Payments** - Escrow system with deposit protection
+- 📱 **Push Notifications** - Real-time updates on bookings and messages
 
-This project is a starting point for a Flutter application.
+### Safety & Trust
+- ✅ **ID Verification** - Optional identity verification for higher trust
+- 🛡️ **Admin Moderation** - Content moderation and dispute resolution
+- 🚫 **Anti-fraud Protection** - Automated detection of suspicious behavior
+- 📋 **Community Guidelines** - Clear rules and policies
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Framework**: Flutter 3+ with null-safety
+- **State Management**: Riverpod
+- **Backend**: Firebase (Auth, Firestore, Storage, Cloud Functions)
+- **Payments**: Razorpay integration
+- **Navigation**: GoRouter
+- **UI**: Material 3 design with custom animations
+- **Testing**: Unit tests, widget tests, integration tests
