@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../shared/widgets/gradient_button.dart';
 import '../../../../shared/widgets/glass_container.dart';
+import '../../domain/entities/user_entity.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/social_auth_button.dart';
@@ -23,9 +24,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _collegeController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   bool _acceptTerms = false;
+  UserRole _selectedRole = UserRole.student;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +72,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         controller: _nameController,
                         label: 'Full Name',
                         keyboardType: TextInputType.name,
+                        prefixIcon: Icons.person_outline,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return 'Please enter your full name';
@@ -86,6 +90,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         controller: _emailController,
                         label: 'Email',
                         keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Icons.email_outlined,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return 'Please enter your email';
@@ -105,6 +110,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         label: 'Password',
                         isPassword: true,
                         isPasswordVisible: _isPasswordVisible,
+                        prefixIcon: Icons.lock_outline,
                         onTogglePassword: () {
                           setState(() {
                             _isPasswordVisible = !_isPasswordVisible;
@@ -131,6 +137,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         label: 'Confirm Password',
                         isPassword: true,
                         isPasswordVisible: _isConfirmPasswordVisible,
+                        prefixIcon: Icons.lock_outline,
                         onTogglePassword: () {
                           setState(() {
                             _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
@@ -146,8 +153,54 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                           return null;
                         },
                       ),
-                      
+
                       const SizedBox(height: 16),
+
+                      // College Field
+                      AuthTextField(
+                        controller: _collegeController,
+                        label: 'College Name',
+                        prefixIcon: Icons.school,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Please enter your college name';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Role Selection
+                      DropdownButtonFormField<UserRole>(
+                        value: _selectedRole,
+                        decoration: const InputDecoration(
+                          labelText: 'Role',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                        items: UserRole.values.map((role) {
+                          return DropdownMenuItem(
+                            value: role,
+                            child: Text(
+                              role.toString().split('.').last.toUpperCase(),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (UserRole? newValue) {
+                          if (newValue != null) {
+                            setState(() {
+                              _selectedRole = newValue;
+                            });
+                          }
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select your role';
+                          }
+                          return null;
+                        },
+                      ),
                       
                       // Terms and Conditions
                       Row(
@@ -332,9 +385,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     }
 
     final result = await ref.read(authStateProvider.notifier).signUpWithEmail(
-      _nameController.text.trim(),
       _emailController.text.trim(),
-      _passwordController.text,
+      _passwordController.text.trim(),
+      _nameController.text.trim(),
+      _selectedRole,
+      _collegeController.text.trim(),
     );
     
     if (result.isSuccess && mounted) {

@@ -50,7 +50,7 @@ class BottomNavScaffold extends StatelessWidget {
           const SizedBox(width: 40), // Space for FAB
           _buildNavItem(
             context,
-            icon: Icons.chat_outline,
+            icon: Icons.chat_outlined,
             activeIcon: Icons.chat,
             label: 'Chats',
             route: '/chats',

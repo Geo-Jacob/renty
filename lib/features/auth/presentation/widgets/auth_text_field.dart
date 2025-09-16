@@ -8,6 +8,7 @@ class AuthTextField extends StatelessWidget {
   final VoidCallback? onTogglePassword;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
+  final IconData? prefixIcon;
 
   const AuthTextField({
     super.key,
@@ -18,6 +19,7 @@ class AuthTextField extends StatelessWidget {
     this.onTogglePassword,
     this.keyboardType = TextInputType.text,
     this.validator,
+    this.prefixIcon,
   });
 
   @override
@@ -29,6 +31,7 @@ class AuthTextField extends StatelessWidget {
       validator: validator,
       decoration: InputDecoration(
         labelText: label,
+        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
         suffixIcon: isPassword
             ? IconButton(
                 icon: Icon(

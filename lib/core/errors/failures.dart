@@ -10,3 +10,7 @@ class ServerFailure extends Failure {
 class CacheFailure extends Failure {
   CacheFailure([super.message = 'Cache Failure']);
 }
+
+class AuthFailure extends Failure {
+  AuthFailure(super.message);
+}

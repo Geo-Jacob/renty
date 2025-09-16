@@ -83,16 +83,27 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, error: null);
     
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      print('Attempting sign in with email: $email'); // Debug log
+      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return const AuthResult.success();
+      
+      if (userCredential.user != null) {
+        print('Sign in successful for user: ${userCredential.user!.uid}'); // Debug log
+        return const AuthResult.success();
+      } else {
+        const error = 'Sign in failed - no user returned';
+        state = state.copyWith(error: error, isLoading: false);
+        return const AuthResult.failure(error);
+      }
     } on FirebaseAuthException catch (e) {
+      print('Firebase Auth Error: ${e.code} - ${e.message}'); // Debug log
       final error = _getAuthErrorMessage(e.code);
       state = state.copyWith(error: error, isLoading: false);
       return AuthResult.failure(error);
     } catch (e) {
+      print('Unexpected error during sign in: $e'); // Debug log
       const error = 'An unexpected error occurred';
       state = state.copyWith(error: error, isLoading: false);
       return const AuthResult.failure(error);

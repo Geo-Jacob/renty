@@ -110,11 +110,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 
                 // Social Login
                 _buildSocialLogin().animate().fadeIn(duration: 600.ms, delay: 400.ms).moveY(begin: 20, duration: 600.ms, delay: 400.ms),
-                
-                const SizedBox(height: 32),
-                
-                // Sign Up Link
-                _buildSocialLogin().animate().fadeIn(duration: 600.ms, delay: 400.ms).moveY(begin: 20, duration: 600.ms, delay: 400.ms),
               ],
             ),
           ),
@@ -134,7 +129,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: const Icon(
-            Icons.handshake_outlined,
+            Icons.store_rounded,  // Using a simpler, more reliable icon
             size: 40,
             color: Colors.white,
           ),
@@ -184,24 +179,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         
         SocialAuthButton(
           onPressed: _googleSignIn,
-          icon: 'assets/icons/google.png',
+          icon: Icons.account_circle_outlined,  // A more professional Google account icon
           text: 'Continue with Google',
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSignUpLink() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          "Don't have an account? ",
-          style: TextStyle(color: AppColors.textSecondary),
-        ),
-        TextButton(
-          onPressed: () => context.go('/signup'),
-          child: const Text('Sign Up'),
         ),
       ],
     );
@@ -209,13 +188,43 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   void _login() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final result = await ref.read(authStateProvider.notifier).signInWithEmail(
-        _emailController.text.trim(),
-        _passwordController.text,
-      );
-      
-      if (result.isSuccess && mounted) {
-        context.go('/home');
+      try {
+        final result = await ref.read(authStateProvider.notifier).signInWithEmail(
+          _emailController.text.trim(),
+          _passwordController.text,
+        );
+        
+        if (!mounted) return;
+
+        if (result.isSuccess) {
+          context.go('/home');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(result.error ?? 'Login failed. Please check your email and password.'),
+              backgroundColor: Colors.red,
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {},
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        if (!mounted) return;
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('An unexpected error occurred. Please try again.'),
+            backgroundColor: Colors.red,
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
       }
     }
   }

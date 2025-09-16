@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../domain/entities/listing_entity.dart';
 
+/// A notifier that manages the state of listings in the application.
+/// Handles loading, filtering, and searching of listings from Firestore.
 class ListingsNotifier extends StateNotifier<AsyncValue<List<ListingEntity>>> {
   final FirebaseFirestore _firestore;
   String? _currentQuery;
@@ -65,28 +67,15 @@ class ListingsNotifier extends StateNotifier<AsyncValue<List<ListingEntity>>> {
     final data = doc.data() as Map<String, dynamic>;
     return ListingEntity(
       id: doc.id,
-      ownerId: data['ownerId'] ?? '',
       title: data['title'] ?? '',
       description: data['description'] ?? '',
+      price: (data['price'] ?? 0.0).toDouble(),
+      location: data['location'] ?? '',
+      images: List<String>.from(data['imageUrls'] ?? []),
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      ownerId: data['ownerId'] ?? '',
       category: data['category'] ?? '',
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
-      condition: ItemCondition.values.firstWhere(
-        (c) => c.toString().split('.').last == data['condition'],
-        orElse: () => ItemCondition.good,
-      ),
-      hourlyPrice: (data['hourlyPrice'] ?? 0.0).toDouble(),
-      dailyPrice: (data['dailyPrice'] ?? 0.0).toDouble(),
-      depositAmount: (data['depositAmount'] ?? 0.0).toDouble(),
-      location: data['location'] ?? '',
-      tags: List<String>.from(data['tags'] ?? []),
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      status: ListingStatus.values.firstWhere(
-        (s) => s.toString().split('.').last == data['status'],
-        orElse: () => ListingStatus.active,
-      ),
-      rating: (data['rating'] ?? 0.0).toDouble(),
-      totalRatings: data['totalRatings'] ?? 0,
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SocialAuthButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final String icon;
+  final dynamic icon;
   final String text;
 
   const SocialAuthButton({
@@ -16,11 +16,13 @@ class SocialAuthButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
       onPressed: onPressed,
-      icon: Image.asset(
-        icon,
-        width: 20,
-        height: 20,
-      ),
+      icon: icon is IconData 
+          ? Icon(icon as IconData, size: 24)
+          : Image.asset(
+              icon as String,
+              width: 20,
+              height: 20,
+            ),
       label: Text(
         text,
         style: const TextStyle(
