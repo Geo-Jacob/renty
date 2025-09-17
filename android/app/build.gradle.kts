@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.cia_renty"
-        minSdk = 21  // Minimum SDK for current Firebase
+        minSdk = 23  // Minimum SDK for current Firebase
         targetSdk = 34  // Latest stable SDK
         versionCode = 1
         versionName = "1.0.0"
@@ -53,7 +53,7 @@ android {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.window:window:1.2.0")

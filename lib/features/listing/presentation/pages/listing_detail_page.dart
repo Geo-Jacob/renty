@@ -15,6 +15,10 @@ class ListingDetailPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(listing.title),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

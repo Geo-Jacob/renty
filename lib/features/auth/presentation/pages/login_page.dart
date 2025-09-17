@@ -103,6 +103,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         text: authState.isLoading ? 'Signing In...' : 'Sign In',
                         isLoading: authState.isLoading,
                       ),
+                      const SizedBox(height: 16),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Don't have an account?"),
+                          TextButton(
+                            onPressed: () => context.go('/signup'),
+                            child: const Text("Sign Up"),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                         ).animate().fadeIn(duration: 600.ms, delay: 200.ms).moveY(begin: 20, duration: 600.ms, delay: 200.ms),                

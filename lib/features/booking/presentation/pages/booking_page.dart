@@ -29,6 +29,10 @@ class _BookingPageState extends ConsumerState<BookingPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Book Item'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

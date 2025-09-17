@@ -9,6 +9,7 @@ import '../../features/listing/presentation/pages/listing_detail_page.dart';
 import '../../features/listing/presentation/pages/create_listing_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/booking/presentation/pages/booking_page.dart';
+import '../../features/booking/presentation/pages/bookings_list_page.dart';
 import '../../features/chat/presentation/pages/chat_list_page.dart';
 import '../../features/listing/presentation/providers/listing_providers.dart';
 import '../widgets/bottom_nav_scaffold.dart';
@@ -60,6 +61,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/home',
             name: 'home',
             builder: (context, state) => const HomePage(),
+          ),
+          GoRoute(
+            path: '/bookings',
+            name: 'bookings',
+            builder: (context, state) => const BookingsListPage(),
           ),
           GoRoute(
             path: '/booking/:listingId',

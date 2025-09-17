@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:renty/shared/providers/listing_provider.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -74,7 +75,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   Text(
                     'What would you like to rent today?',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                     ),
                   ).animate().fadeInLeft(duration: 600.ms, delay: 100.ms),
                   const SizedBox(height: 16),
@@ -188,6 +189,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               listing: listing,
               onTap: () {
                 // Navigate to listing detail
+                context.push('/listing/${listing.id}');
               },
             );
           },

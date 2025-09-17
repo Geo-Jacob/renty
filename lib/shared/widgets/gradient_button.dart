@@ -62,14 +62,14 @@ class _GradientButtonState extends State<GradientButton>
                     ? LinearGradient(
                         colors: [
                           AppColors.mutedText,
-                          AppColors.mutedText.withOpacity(0.8),
+                          AppColors.mutedText.withValues(alpha: 0.8),
                         ],
                       )
                     : AppColors.accentGradient,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: widget.onPressed == null ? null : [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),

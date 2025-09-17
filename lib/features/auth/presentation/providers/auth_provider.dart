@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -83,14 +84,14 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, error: null);
     
     try {
-      print('Attempting sign in with email: $email'); // Debug log
+      debugPrint('Attempting sign in with email: $email'); // Debug log
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       
       if (userCredential.user != null) {
-        print('Sign in successful for user: ${userCredential.user!.uid}'); // Debug log
+        debugPrint('Sign in successful for user: ${userCredential.user!.uid}'); // Debug log
         return const AuthResult.success();
       } else {
         const error = 'Sign in failed - no user returned';
@@ -98,12 +99,12 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
         return const AuthResult.failure(error);
       }
     } on FirebaseAuthException catch (e) {
-      print('Firebase Auth Error: ${e.code} - ${e.message}'); // Debug log
+      debugPrint('Firebase Auth Error: ${e.code} - ${e.message}'); // Debug log
       final error = _getAuthErrorMessage(e.code);
       state = state.copyWith(error: error, isLoading: false);
       return AuthResult.failure(error);
     } catch (e) {
-      print('Unexpected error during sign in: $e'); // Debug log
+      debugPrint('Unexpected error during sign in: $e'); // Debug log
       const error = 'An unexpected error occurred';
       state = state.copyWith(error: error, isLoading: false);
       return const AuthResult.failure(error);

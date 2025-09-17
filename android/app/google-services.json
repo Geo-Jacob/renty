@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "704691504148",
-    "project_id": "renty-65844",
-    "storage_bucket": "renty-65844.firebasestorage.app"
+    "project_number": "243531277840",
+    "project_id": "renty-2bbb1",
+    "storage_bucket": "renty-2bbb1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:704691504148:android:63a7fc8252e8b30fedd301",
+        "mobilesdk_app_id": "1:243531277840:android:3c9ee1cfe9c3c16a8a8c95",
         "android_client_info": {
           "package_name": "com.example.cia_renty"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "243531277840-ua6s6chntagqmei1slf9c9ut936d23gg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBun_SbL_zrDHdQHmi0U_TZ-JVYvn9RQ7g"
+          "current_key": "AIzaSyD2GxBBpJOcmcqDJrv6oHWfv7a4DvysT8Q"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243531277840-ua6s6chntagqmei1slf9c9ut936d23gg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
