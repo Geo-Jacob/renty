@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../domain/entities/listing_entity.dart';
+import 'package:renty/features/listing/domain/entities/listing_entity.dart';
 
 final listingByIdProvider = FutureProvider.family<ListingEntity, String>((ref, id) async {
   try {

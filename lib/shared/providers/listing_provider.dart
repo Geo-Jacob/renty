@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../domain/entities/listing_entity.dart';
+import '../../features/listing/domain/entities/listing_entity.dart';
 
 /// A notifier that manages the state of listings in the application.
 /// Handles loading, filtering, and searching of listings from Firestore.
@@ -138,6 +138,144 @@ class ListingsNotifier extends StateNotifier<AsyncValue<List<ListingEntity>>> {
     }
   }
 
+  Future<void> createListingWithDetails({
+    required String title,
+    required String description,
+    required double hourlyPrice,
+    required double dailyPrice,
+    required double depositAmount,
+    required String location,
+    required String category,
+    required ItemCondition condition,
+    required String ownerId,
+    List<String> imageUrls = const [],
+    List<String> tags = const [],
+  }) async {
+    try {
+      // Validate input
+      if (title.trim().isEmpty) {
+        throw Exception('Title cannot be empty');
+      }
+      if (description.trim().isEmpty) {
+        throw Exception('Description cannot be empty');
+      }
+      if (hourlyPrice < 0 || dailyPrice < 0) {
+        throw Exception('Prices cannot be negative');
+      }
+      if (depositAmount < 0) {
+        throw Exception('Deposit amount cannot be negative');
+      }
+      if (location.trim().isEmpty) {
+        throw Exception('Location cannot be empty');
+      }
+      if (ownerId.trim().isEmpty) {
+        throw Exception('Owner ID cannot be empty');
+      }
+
+      final listingData = {
+        'title': title.trim(),
+        'description': description.trim(),
+        'hourlyPrice': hourlyPrice,
+        'dailyPrice': dailyPrice,
+        'depositAmount': depositAmount,
+        'location': location.trim(),
+        'category': category,
+        'condition': condition.toString().split('.').last,
+        'ownerId': ownerId,
+        'imageUrls': imageUrls,
+        'tags': tags,
+        'status': 'active',
+        'rating': 0.0,
+        'totalRatings': 0,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+        'searchKeywords': _generateSearchKeywords('$title $description $category ${tags.join(' ')}'),
+      };
+
+      await _firestore.collection('listings').add(listingData);
+      
+      // Reload listings to show the new one
+      await loadListings();
+    } catch (error, stackTrace) {
+      // Log the error for debugging
+      debugPrint('Error creating listing: $error');
+      debugPrint('Stack trace: $stackTrace');
+      
+      rethrow;
+    }
+  }
+
+  Future<void> updateListing({
+    required String listingId,
+    required String title,
+    required String description,
+    required double hourlyPrice,
+    required double dailyPrice,
+    required double depositAmount,
+    required String location,
+    required String category,
+    required ItemCondition condition,
+    List<String> imageUrls = const [],
+    List<String> tags = const [],
+  }) async {
+    try {
+      // Validate input
+      if (title.trim().isEmpty) {
+        throw Exception('Title cannot be empty');
+      }
+      if (description.trim().isEmpty) {
+        throw Exception('Description cannot be empty');
+      }
+      if (hourlyPrice < 0 || dailyPrice < 0) {
+        throw Exception('Prices cannot be negative');
+      }
+      if (depositAmount < 0) {
+        throw Exception('Deposit amount cannot be negative');
+      }
+      if (location.trim().isEmpty) {
+        throw Exception('Location cannot be empty');
+      }
+
+      final updateData = {
+        'title': title.trim(),
+        'description': description.trim(),
+        'hourlyPrice': hourlyPrice,
+        'dailyPrice': dailyPrice,
+        'depositAmount': depositAmount,
+        'location': location.trim(),
+        'category': category,
+        'condition': condition.toString().split('.').last,
+        'imageUrls': imageUrls,
+        'tags': tags,
+        'updatedAt': FieldValue.serverTimestamp(),
+        'searchKeywords': _generateSearchKeywords('$title $description $category ${tags.join(' ')}'),
+      };
+
+      await _firestore.collection('listings').doc(listingId).update(updateData);
+      
+      // Reload listings to reflect changes
+      await loadListings();
+    } catch (error, stackTrace) {
+      debugPrint('Error updating listing: $error');
+      debugPrint('Stack trace: $stackTrace');
+      rethrow;
+    }
+  }
+
+  Future<void> deleteListing(String listingId) async {
+    try {
+      // Delete the listing document
+      await _firestore.collection('listings').doc(listingId).delete();
+      
+      // Reload listings to reflect changes
+      await loadListings();
+    } catch (error, stackTrace) {
+      debugPrint('Error deleting listing: $error');
+      debugPrint('Stack trace: $stackTrace');
+      rethrow;
+    }
+  }
+
   List<String> _generateSearchKeywords(String query) {
     // Simple keyword generation - in production, use better search
     return query.toLowerCase().split(' ').where((word) => word.isNotEmpty).toList();
@@ -147,13 +285,9 @@ class ListingsNotifier extends StateNotifier<AsyncValue<List<ListingEntity>>> {
     final data = doc.data() as Map<String, dynamic>;
     return ListingEntity(
       id: doc.id,
+      ownerId: data['ownerId'] ?? '',
       title: data['title'] ?? '',
       description: data['description'] ?? '',
-      price: (data['price'] ?? 0.0).toDouble(),
-      location: data['location'] ?? '',
-      images: List<String>.from(data['imageUrls'] ?? []),
-      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      ownerId: data['ownerId'] ?? '',
       category: data['category'] ?? '',
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
       condition: ItemCondition.values.firstWhere(
@@ -163,7 +297,9 @@ class ListingsNotifier extends StateNotifier<AsyncValue<List<ListingEntity>>> {
       hourlyPrice: (data['hourlyPrice'] ?? 0.0).toDouble(),
       dailyPrice: (data['dailyPrice'] ?? 0.0).toDouble(),
       depositAmount: (data['depositAmount'] ?? 0.0).toDouble(),
+      location: data['location'] ?? '',
       tags: List<String>.from(data['tags'] ?? []),
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       status: ListingStatus.values.firstWhere(
         (s) => s.toString().split('.').last == (data['status'] ?? 'active'),

@@ -10,8 +10,8 @@ plugins {
 
 android {
     namespace = "com.example.cia_renty"
-    compileSdk = 35  // Updated to latest stable SDK
-    ndkVersion = "26.3.11579264"  // Specify a specific NDK version
+    compileSdk = 35
+    ndkVersion = "26.3.11579264"  // Using the installed NDK version
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -24,8 +24,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.cia_renty"
-        minSdk = 23  // Minimum SDK for current Firebase
-        targetSdk = 34  // Latest stable SDK
+        minSdk = 23  // Updated for Firebase compatibility
+        targetSdk = 35  // Updated to match compileSdk
         versionCode = 1
         versionName = "1.0.0"
         multiDexEnabled = true  // Enable multidex for large app
@@ -53,11 +53,15 @@ android {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.window:window:1.2.0")
-    implementation("androidx.window:window-java:1.2.0")
+    implementation("androidx.window:window:1.0.0")
+    implementation("androidx.window:window-java:1.0.0")
+    // Force compatible versions for SDK 34
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.activity:activity:1.7.2")
+    implementation("androidx.activity:activity-ktx:1.7.2")
 }
 
 flutter {

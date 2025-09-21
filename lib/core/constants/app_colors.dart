@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Teal-Indigo Palette (Option A)
-  static const Color primary = Color(0xFF0EA5A4);
-  static const Color primaryDark = Color(0xFF5B21B6);
+  static const Color primary = Color(0xFF96A78D);
+  static const Color primaryDark = Color(0xFFB6CEB4);
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceDark = Color(0xFF0F172A);
+  static const Color surfaceDark = Color.fromARGB(255, 129, 154, 214);
   static const Color mutedText = Color(0xFF6B7280);
   static const Color success = Color(0xFF059669);
   static const Color danger = Color(0xFFEF4444);
@@ -23,7 +23,7 @@ class AppColors {
   static const Color divider = Color(0xFFE5E7EB);
   
   // Text colors
-  static const Color textPrimary = Color(0xFF111827);
+  static const Color textPrimary = Color.fromRGBO(244, 247, 253,5);
   static const Color textSecondary = Color(0xFF6B7280);
   static const Color textLight = Color(0xFF9CA3AF);
 
